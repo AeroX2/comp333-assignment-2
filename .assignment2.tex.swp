@@ -1,0 +1,84 @@
+\documentclass[journal,a4paper]{IEEEtran}
+\usepackage{fullpage}
+\usepackage{float}
+\usepackage[T1]{fontenc}
+
+\usepackage{xcolor}
+\usepackage{listings}
+
+\begin{document}
+\onecolumn
+
+\title{COMP333: Assignment 2}
+\author{James Ridey\\
+44805632}
+\maketitle
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
+\lstdefinestyle{customasm}{
+  belowcaptionskip=1\baselineskip,
+  frame=L,
+  xleftmargin=\parindent,
+  language=[x86masm]Assembler,
+  basicstyle=\footnotesize\ttfamily,
+  commentstyle=\itshape\color{purple!40!black},
+}
+
+\lstset{escapechar=@,style=customc}
+
+\pagenumbering{gobble}
+\hyphenation{water question questions maximum}
+\section*{Question 1}
+\begin{enumerate}
+	\item A
+	\item A
+	\item A
+\end{enumerate}
+
+\section*{Question 2}
+\begin{enumerate}
+	\item A
+	\item A
+	\item A
+\end{enumerate}
+
+\section*{Question 3}
+\begin{enumerate}
+	\item A
+	\item A
+	\item A
+\end{enumerate}
+
+\section*{Question 4}
+\begin{enumerate}
+	\item A
+	\item A
+	\item A
+\end{enumerate}
+
+\section*{Question 5}
+- time complexity karatsuba
+- In what circumstance would you expect Karatsuba’s algorithm to be more efficient than the classical one?
+
+\section*{Question 6}
+\begin{enumerate}
+	\item A
+	\item A
+	\item A
+\end{enumerate}
+
+
+\end{document}

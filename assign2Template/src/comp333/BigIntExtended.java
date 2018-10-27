@@ -127,6 +127,43 @@ public class BigIntExtended {
 		
 		return result;
 	}
+
+	//Return a random int between 0 and high (inclusive)
+	public static int random(int high) {
+		return (int)(Math.random()*(high+1));
+	}
+
+	public static BigInt randombigint(BigInt low, BigInt high) {
+	    if (high.lessOrEqual(low)) return null;
+
+	   	//Generate a random BigInt between 0 and (high-low)
+		String difference = high.subtract(low).toString();
+		StringBuilder randomBigIntToAdd = new StringBuilder("0");
+
+		//Pick a random amount of digits to add
+		int length = difference.length();
+		int randomLength = random(length);
+		boolean restrictedRange = randomLength == length;
+	   	for (int i = 0; i < randomLength; i++) {
+	   		int digit;
+
+	   		//Ensure we never exceed the difference by restricting the range, eg if we have a difference of
+			//5678, if the first digit picked is less than 5 then we can pick whatever digit we want afterwards
+			//However if we pick 5, the next digit must be restricted within the range 0-6
+	   	    if (restrictedRange) {
+	   	    	int largest = difference.charAt(i)-'0';
+	   	    	digit = random(largest);
+	   	    	restrictedRange = digit == largest;
+			} else {
+	   	    	digit = random(9);
+			}
+
+	   	   	randomBigIntToAdd.append(digit);
+		}
+
+		//Add the random BigInt to the low BigInt
+	   	return low.add(new BigInt(randomBigIntToAdd.toString()));
+	}
 	
 	// Pre: n is an odd big integer greater than 4.
 	//      s is an ordinary positive integer.
@@ -137,7 +174,29 @@ public class BigIntExtended {
 		if (n.isEqual(TWO) || n.isEqual(THREE)) return true;
 		if (n.divide(TWO)[1].isEqual(ZERO) || (n.lessOrEqual(TWO) && !n.isEqual(TWO))) return false;
 
+		int s2 = 0;
+		BigInt nMinusOne = n.subtract(ONE);
+		BigInt d = nMinusOne;
+		while (true) {
+			BigInt[] divmod = d.divide(TWO);
+			if (!divmod[1].isEqual(ZERO)) break;
+			d = divmod[0];
+			s2++;
+		}
 
+		witnessLoop:
+		for (; s >= 0; s--) {
+			BigInt a = randombigint(TWO,nMinusOne);
+			BigInt x = modexp(a,d,n);
+			if (x.isEqual(ONE) || (x.isEqual(nMinusOne))) continue;
+
+			for (int i = s2-1; i >= 0; i--) {
+				x = x.multiply(x).divide(n)[1];
+				if (x.isEqual(ONE)) return false;
+				if (x.isEqual(nMinusOne)) continue witnessLoop;
+			}
+			return false;
+		}
 
 		return true;
 	}
@@ -150,16 +209,33 @@ public class BigIntExtended {
 
 		// Complete this code.
 		
-		return result;
+		return null;
 	}
 
 	public static void main(String[] args) {
-		
+
 		// Implement a simple interactive RSA demo program here.
 
-		System.out.println(Arrays.toString(egcd(new BigInt("270"), new BigInt("192"))));
+		System.out.println(new BigInt("00000000000000000111111").toString());
+//		while (true) {
+//			BigInt b = new BigInt("1234");
+//			BigInt c = new BigInt("56789");
+//			BigInt a = randombigint(b,c);
+//
+//			// a < 1234 || a > 56789
+//			if ((!a.isEqual(b) && a.lessOrEqual(b)) || (!a.isEqual(c) && c.lessOrEqual(a))) {
+//				System.out.println("ERROR:");
+//				System.out.println(a);
+//				break;
+//			}
+//		}
+
+		BigInt a = new BigInt("100");
+		BigInt b = new BigInt("100");
+		BigInt c = //Oh
+		System.out.println(millerrabin(a,10));
 
 	}
-	
+
 	
 }
