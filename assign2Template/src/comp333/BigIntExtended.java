@@ -8,8 +8,14 @@
  */
  package comp333;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
 
 public class BigIntExtended {
 
@@ -61,7 +67,7 @@ public class BigIntExtended {
 	public static int minv(int a, int n) {
 		int[] egcd = egcd(a, n);
 		assert(egcd[0] == 1);
-		return egcd[1] % n;
+		return Math.floorMod(egcd[1],n);
 	}
 	
 	// Chinese remainder algorithm.
@@ -162,41 +168,46 @@ public class BigIntExtended {
 		return s.add(t).add(z0);
 	}
 
-	//Return a random int between 0 and high (inclusive)
-	public static int random(int high) {
-		return (int)(Math.random()*(high+1));
+	//Return a randomrange int between 0 and high (inclusive)
+	public static int randomrange(int low, int high) {
+		if (low > high) {
+			System.out.println("ERROR: Low > High");
+			return -1;
+		}
+		return (int)(Math.random()*(high-low+1)) + low;
 	}
 
+	//TODO: This function isn't random it is biased, low=1, high=10, biased towards 10
 	public static BigInt randombigint(BigInt low, BigInt high) {
 		if (high.lessOrEqual(low)) return null;
 
-		//Generate a random BigInt between 0 and (high-low)
-		String difference = high.subtract(low).toString();
-		StringBuilder randomBigIntToAdd = new StringBuilder("0");
+		StringBuilder randomNumber = new StringBuilder();
+		String lowS = low.toString();
+		String highS = high.toString();
 
-		//Pick a random amount of digits to add
-		int length = difference.length();
-		int randomLength = random(length);
-		boolean restrictedRange = randomLength == length;
+		//Pick the amount of digits that the final result is going to be
+		int randomLength = randomrange(lowS.length(), highS.length());
+		//System.out.println("Random length: "+randomLength);
+
+		boolean restrictLow = randomLength == lowS.length();
+		boolean restrictHigh = randomLength == highS.length();
 		for (int i = 0; i < randomLength; i++) {
-			int digit;
+			int lowDigit = (i==0) ? 1 : 0;
+			int highDigit = 9;
 
-			//Ensure we never exceed the difference by restricting the range, eg if we have a difference of
-			//5678, if the first digit picked is less than 5 then we can pick whatever digit we want afterwards
-			//However if we pick 5, the next digit must be restricted within the range 0-6
-			if (restrictedRange) {
-				int largest = difference.charAt(i)-'0';
-				digit = random(largest);
-				restrictedRange = digit == largest;
-			} else {
-				digit = random(9);
-			}
+			if (restrictLow) lowDigit = lowS.charAt(i)-'0';
+			if (restrictHigh) highDigit = highS.charAt(i)-'0';
 
-			randomBigIntToAdd.append(digit);
+			int digit = randomrange(lowDigit, highDigit);
+			if (restrictLow && digit != lowDigit) restrictLow = false;
+			if (restrictHigh && digit != highDigit) restrictHigh = false;
+
+			//System.out.println("Appending digit: "+digit);
+			randomNumber.append(digit);
 		}
 
-		//Add the random BigInt to the low BigInt
-		return low.add(new BigInt(randomBigIntToAdd.toString()));
+		//Add the randomrange BigInt to the low BigInt
+		return new BigInt(randomNumber.toString());
 	}
 
 	// Pre: n is an odd big integer greater than 4.
@@ -236,28 +247,131 @@ public class BigIntExtended {
 	}
 
 	// Pre: l and s are ordinary positive integers.
-	// Returns: a random "probable" big prime number n of length l decimal digits.
+	// Returns: a randomrange "probable" big prime number n of length l decimal digits.
 	//          The probability that n is not prime is less than 4^{-s}.
 	public static BigInt randomprime(int l, int s) {
+		List<Character> evens = Arrays.asList('0','2','4','6','8');
+
 	    while (true) {
-	    	BigInt random = randombigint();
+	    	BigInt low = new BigInt("1"+(String.join("", Collections.nCopies(l-1, "0"))));
+		    BigInt high = new BigInt(String.join("", Collections.nCopies(l, "9")));
+		    //System.out.println(low);
+		    //System.out.println(high);
+	    	BigInt random = randombigint(low, high);
+
+		    //System.out.println("Before");
+		    //System.out.println(random);
+
+	    	//Check if the last digit is even and if so replace it
+		    String randomString = random.toString();
+		    int n = randomString.length()-1;
+	    	char lastChar = randomString.charAt(n);
+	        if (evens.contains(lastChar)) {
+	            lastChar += 1;
+	            random = new BigInt(randomString.substring(0,n)+lastChar);
+	        }
+
+		    //System.out.println("After");
+	        //System.out.println(random);
+
+	        if (millerrabin(random, s)) return random;
+		}
+	}
+
+	public static void encrypt(Scanner scanner) {
+		while (true) {
+			try {
+				//TODO: BigInt doesn't support negative numbers, so egcd doesn't support BigInt
+				System.out.print("Length of keys [1 to 4]: ");
+				String s = scanner.nextLine();
+				int length = Integer.valueOf(s);
+				if (length <= 0 || length > 4) {
+					throw new Exception();
+				}
+
+				BigInt p = randomprime(length, 32);
+				BigInt q = randomprime(length, 32);
+				BigInt n = p.multiply(q);
+				BigInt totient = p.subtract(ONE).multiply(q.subtract(ONE));
+
+				BigInt publicKey;
+				while (true) {
+					publicKey = randomprime(totient.toString().length(), 32);
+
+					int a = Integer.valueOf(totient.toString());
+					int b = Integer.valueOf(publicKey.toString());
+
+					if (publicKey.lessOrEqual(totient) && egcd(a,b)[0] == 1) break;
+				}
+
+				int a = Integer.valueOf(publicKey.toString());
+				int b = Integer.valueOf(totient.toString());
+				int privateKey = minv(a,b);
+
+				System.out.println("Public key: " + publicKey);
+				System.out.println("Private key: " + privateKey);
+				System.out.println("Modulus: " + n);
+//				System.out.println("Totient: " + totient);
+
+				System.out.print("Data to encrypt: ");
+				s = scanner.nextLine();
+				for (char c : s.toCharArray()) {
+					BigInt qq = new BigInt(String.valueOf((int)c));
+					BigInt zz = modexp(qq, publicKey, n);
+					System.out.print(zz+" ");
+				}
+				System.out.println('\n');
+
+				break;
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Incorrect input");
+			}
+		}
+	}
+
+	public static void decrypt(Scanner scanner) {
+		while (true) {
+			try {
+				System.out.print("Private key: ");
+				String s = scanner.nextLine();
+				BigInt privateKey = new BigInt(s);
+
+				System.out.print("Modulus: ");
+				s = scanner.nextLine();
+				BigInt n = new BigInt(s);
+
+				System.out.print("Data: ");
+				s = scanner.nextLine();
+				for (String v : s.split(" ")) {
+					BigInt d = new BigInt(v);
+					int c = Integer.parseInt(modexp(d, privateKey, n).toString());
+					System.out.print((char)c);
+				}
+				System.out.println('\n');
+
+				break;
+			} catch (Exception e) {
+				System.out.println("Incorrect input");
+			}
 		}
 	}
 
 	public static void main(String[] args) {
-
 		// Implement a simple interactive RSA demo program here.
 
-		BigInt a = new BigInt("100");
-		BigInt b = new BigInt("100");
-		BigInt c = bigpow(a,b).subtract(ONE);
-		System.out.println(millerrabin(c,10));
-
-//		System.out.println(new BigInt("34").subtract(new BigInt("10")));
-////		System.out.println(new BigInt("10").subtract(new BigInt("34")));
-//
-//		System.out.println(karatsuba(new BigInt("12345"), new BigInt("6789")));
-//		System.out.println(karatsuba(new BigInt("328931"), new BigInt("90328103")));
+		Scanner scanner = new Scanner(System.in);
+		while (true) {
+			System.out.print("Encrypt or Decrypt? [E/D]: ");
+			String s = scanner.nextLine().toLowerCase();
+			if (s.charAt(0) == 'e') {
+				encrypt(scanner);
+			} else if (s.charAt(0) == 'd') {
+				decrypt(scanner);
+			} else {
+				System.out.println("Incorrect input");
+			}
+		}
 	}
 	
 	
