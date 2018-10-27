@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc}
 
 \usepackage{xcolor}
+\usepackage{amsmath}
 \usepackage{listings}
 
 \begin{document}
@@ -64,21 +65,38 @@
 
 \section*{Question 4}
 \begin{enumerate}
-	\item A
+	\item Loop invariant: TODO
+		  For this algorithm it runs until b is zero and for every iteration of the loop we divide b by 2. So this loop runs at least $log_2(b)$ times. During the loop operation we do 2 multiplications and 2 divisions, while 1 of the multiplications and 1 of the divisions is behind an if statement in the worse case scenario (Big-Oh), if a number was simply a 1 bit repeated it would always trigger the if statement.
+		  
+		  So for the worse case scenario we have
+		  \begin{align*}
+		  	&= log_2(b)(2mul + 2div) \\
+		  	&= log_2(b)(2(L(a)L(b)) + 2(L(a)(L(a)-L(b)+1))) \\
+		  	&= log_2(b)(2(L(a)(L(a)+1))) \\
+		  \end{align*}
 	\item A
 	\item A
 \end{enumerate}
 
 \section*{Question 5}
-- time complexity karatsuba
-- In what circumstance would you expect Karatsuba’s algorithm to be more efficient than the classical one?
+- For the time complexity of Karatsuba we first need to find out how deep the tree of the recursion will go. Using what we understand of the algorithm and how it effectively splits the numbers in half each time. The depth of the tree is $log_2(max(L(a),L(b)))$.
 
-\section*{Question 6}
+Then for every node of the recursion we do the following
 \begin{enumerate}
-	\item A
-	\item A
-	\item A
+	\item Call Karatsuba another three times
+	\item 2 additions
+	\item 2 multiplications
+	\item 2 subtractions
+	\item 2 lessThanOrEqual's
+	\item 2 modpows - (similar time complexity to modexp)	
 \end{enumerate}
 
+This effectively means we have the time complexity of
+\begin{align*}
+	&= log_2(max(L(a),L(b)))\cdot \left( 3(2add+2mul+2sub+2less+2modpow) \right) \\
+	&= log_2(max(L(a),L(b)))\cdot \left( 3(2add+2mul+2sub+2less+2modpow) \right) \\
+\end{align*}
+
+- In what circumstance would you expect Karatsuba’s algorithm to be more efficient than the classical one?
 
 \end{document}

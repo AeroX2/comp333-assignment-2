@@ -15,36 +15,40 @@ public class BigIntExtended {
 
 	private static BigInt ZERO = new BigInt("0");
 	private static BigInt ONE = new BigInt("1");
+
 	private static BigInt TWO = new BigInt("2");
 	private static BigInt THREE = new BigInt("3");
+	private static BigInt TEN = new BigInt("10");
+
 	private static BigInt NEGATIVE_ONE = new BigInt("-1");
 
 	// Euclid's algorithm, extended form.
 	// Pre: a and b are positive big integers.
 	// Returns: triple (d, x, y) such that
 	//          d = gcd(a,b) = ax + by.
-	public static BigInt[] egcd(BigInt a, BigInt b) {
-		BigInt x0 = ONE;
-		BigInt x1 = ZERO;
-		BigInt y0 = ZERO;
-		BigInt y1 = ONE;
+	public static int[] egcd(int a, int b) {
+		int x0 = 1;
+		int x1 = 0;
+		int y0 = 0;
+		int y1 = 1;
 
-		while (!b.isEqual(ZERO)) {
-			BigInt t = new BigInt(b.toString());
-			BigInt[] q = a.divide(b);
-			a = t;
-			b = q[1];
+		while (b != 0) {
+			int qdiv = a / b;
+			int qmod = a % b;
 
-			t = new BigInt(x1.toString());
-			x1 = x0.subtract(x1.multiply(q[0]));
+			a = b;
+			b = qmod;
+
+			int t = x1;
+			x1 = x0-x1*qdiv;
 			x0 = t;
 
-			t = new BigInt(y1.toString());
-			y1 = y0.subtract(y1.multiply(q[0]));
+			t = y1;
+			y1 = y0-y1*qdiv;
 			y0 = t;
 		}
 
-		BigInt[] result = new BigInt[3];
+		int[] result = new int[3];
 		result[0] = a;
 		result[1] = x0;
 		result[2] = y0;
@@ -54,9 +58,10 @@ public class BigIntExtended {
 	// Modular inversion.
 	// Pre: a and n are positive big integers which are coprime.
 	// Returns: the inverse of a modulo n.
-	public static BigInt minv(BigInt a, BigInt n) {
-		BigInt[] egcd = egcd(a, n);
-		return egcd[0].divide(n)[1];
+	public static int minv(int a, int n) {
+		int[] egcd = egcd(a, n);
+		assert(egcd[0] == 1);
+		return egcd[1] % n;
 	}
 	
 	// Chinese remainder algorithm.
@@ -66,17 +71,16 @@ public class BigIntExtended {
 	//          c is congruent to a modulo p,
 	//          c is congruent to b modulo q,
 	//          and 0 <= c < pq.
-	public static BigInt cra(BigInt p, BigInt q, BigInt a, BigInt b) {
+	public static int cra(int p, int q, int a, int b) {
+		int prod = p*q;
 
-		BigInt prod = p.multiply(q);
+		int p1 = prod/p;
+		int sum = a*minv(p1, p)*p1;
 
-		BigInt p1 = prod.divide(p)[0];
-		BigInt sum = a.multiply(minv(p1, p)).multiply(p1);
+		int p2 = prod/q;
+		sum += (b*minv(p2, q)*p2);
 
-		BigInt p2 = prod.divide(q)[0];
-		sum = sum.add(b.multiply(minv(p2, q)).multiply(p2));
-
-		return sum.divide(prod)[1];
+		return sum % prod;
 	}
 	
 	// Modular exponentiation.
@@ -117,15 +121,45 @@ public class BigIntExtended {
 
 		return result;
 	}
-		
+
+	public static BigInt bigpow(BigInt a, BigInt b) {
+		BigInt r = ONE;
+		while (!b.lessOrEqual(ZERO)) {
+			BigInt[] division = b.divide(TWO);
+			if (division[1].isEqual(ONE)) {
+				r = r.multiply(a);
+			}
+
+			b = division[0];
+			a = a.multiply(a);
+		}
+		return r;
+	}
+
 	// Pre: a and b are nonnegative big integers of equal length.
 	// Returns: the product of a and b using karatsuba's algorithm.
 	public static BigInt karatsuba(BigInt a, BigInt b) {
-		BigInt result = new BigInt();
-		
-		// Complete this code.
-		
-		return result;
+		if (a.lessOrEqual(TEN) || b.lessOrEqual(TEN)) return a.multiply(b);
+
+		String num1 = a.toString();
+		String num2 = b.toString();
+
+		int m = Math.max(num1.length(), num2.length());
+		int m2 = m/2;
+
+		BigInt low1  = new BigInt(num1.substring(0,m2));
+		BigInt high1 = new BigInt(num1.substring(m2));
+		BigInt low2  = new BigInt(num2.substring(0,m2));
+		BigInt high2 = new BigInt(num2.substring(m2));
+
+		BigInt z0 = karatsuba(low1, low2);
+		BigInt z1 = karatsuba(low1.add(high1), low2.add(high2));
+		BigInt z2 = karatsuba(high1, high2);
+
+		BigInt s = z2.multiply(bigpow(TEN, new BigInt(String.valueOf(m))));
+		BigInt t = z1.subtract(z2).subtract(z0).multiply(bigpow(TEN, new BigInt(String.valueOf(m2))));
+
+		return s.add(t).add(z0);
 	}
 
 	//Return a random int between 0 and high (inclusive)
@@ -134,9 +168,9 @@ public class BigIntExtended {
 	}
 
 	public static BigInt randombigint(BigInt low, BigInt high) {
-	    if (high.lessOrEqual(low)) return null;
+		if (high.lessOrEqual(low)) return null;
 
-	   	//Generate a random BigInt between 0 and (high-low)
+		//Generate a random BigInt between 0 and (high-low)
 		String difference = high.subtract(low).toString();
 		StringBuilder randomBigIntToAdd = new StringBuilder("0");
 
@@ -144,27 +178,27 @@ public class BigIntExtended {
 		int length = difference.length();
 		int randomLength = random(length);
 		boolean restrictedRange = randomLength == length;
-	   	for (int i = 0; i < randomLength; i++) {
-	   		int digit;
+		for (int i = 0; i < randomLength; i++) {
+			int digit;
 
-	   		//Ensure we never exceed the difference by restricting the range, eg if we have a difference of
+			//Ensure we never exceed the difference by restricting the range, eg if we have a difference of
 			//5678, if the first digit picked is less than 5 then we can pick whatever digit we want afterwards
 			//However if we pick 5, the next digit must be restricted within the range 0-6
-	   	    if (restrictedRange) {
-	   	    	int largest = difference.charAt(i)-'0';
-	   	    	digit = random(largest);
-	   	    	restrictedRange = digit == largest;
+			if (restrictedRange) {
+				int largest = difference.charAt(i)-'0';
+				digit = random(largest);
+				restrictedRange = digit == largest;
 			} else {
-	   	    	digit = random(9);
+				digit = random(9);
 			}
 
-	   	   	randomBigIntToAdd.append(digit);
+			randomBigIntToAdd.append(digit);
 		}
 
 		//Add the random BigInt to the low BigInt
-	   	return low.add(new BigInt(randomBigIntToAdd.toString()));
+		return low.add(new BigInt(randomBigIntToAdd.toString()));
 	}
-	
+
 	// Pre: n is an odd big integer greater than 4.
 	//      s is an ordinary positive integer.
 	// Returns: if n is prime then returns true with certainty,
@@ -191,7 +225,7 @@ public class BigIntExtended {
 			if (x.isEqual(ONE) || (x.isEqual(nMinusOne))) continue;
 
 			for (int i = s2-1; i >= 0; i--) {
-				x = x.multiply(x).divide(n)[1];
+				x = modexp(x,TWO,n);
 				if (x.isEqual(ONE)) return false;
 				if (x.isEqual(nMinusOne)) continue witnessLoop;
 			}
@@ -200,42 +234,31 @@ public class BigIntExtended {
 
 		return true;
 	}
-	
+
 	// Pre: l and s are ordinary positive integers.
 	// Returns: a random "probable" big prime number n of length l decimal digits.
 	//          The probability that n is not prime is less than 4^{-s}.
 	public static BigInt randomprime(int l, int s) {
-
-
-		// Complete this code.
-		
-		return null;
+	    while (true) {
+	    	BigInt random = randombigint();
+		}
 	}
 
 	public static void main(String[] args) {
 
 		// Implement a simple interactive RSA demo program here.
 
-		System.out.println(new BigInt("00000000000000000111111").toString());
-//		while (true) {
-//			BigInt b = new BigInt("1234");
-//			BigInt c = new BigInt("56789");
-//			BigInt a = randombigint(b,c);
-//
-//			// a < 1234 || a > 56789
-//			if ((!a.isEqual(b) && a.lessOrEqual(b)) || (!a.isEqual(c) && c.lessOrEqual(a))) {
-//				System.out.println("ERROR:");
-//				System.out.println(a);
-//				break;
-//			}
-//		}
-
 		BigInt a = new BigInt("100");
 		BigInt b = new BigInt("100");
-		BigInt c = //Oh
-		System.out.println(millerrabin(a,10));
+		BigInt c = bigpow(a,b).subtract(ONE);
+		System.out.println(millerrabin(c,10));
 
+//		System.out.println(new BigInt("34").subtract(new BigInt("10")));
+////		System.out.println(new BigInt("10").subtract(new BigInt("34")));
+//
+//		System.out.println(karatsuba(new BigInt("12345"), new BigInt("6789")));
+//		System.out.println(karatsuba(new BigInt("328931"), new BigInt("90328103")));
 	}
-
+	
 	
 }
