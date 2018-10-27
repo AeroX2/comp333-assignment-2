@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2e0234f9-9a85-42e6-b1ef-8da2827f494f" name="Default Changelist" comment="" />
+    <list default="true" id="2e0234f9-9a85-42e6-b1ef-8da2827f494f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/comp333/BigInt.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/comp333/BigInt.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/comp333/BigIntExtended.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/comp333/BigIntExtended.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comp333/BigInt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/comp333/BigInt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/comp333/BigIntExtended.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/comp333/BigIntExtended.java" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,12 +20,14 @@
     <session id="-431311756">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="4" />
-          <entry key="project.open.time.1" value="1" />
+          <entry key="project.closed" value="8" />
+          <entry key="project.open.time.1" value="2" />
+          <entry key="project.open.time.11" value="1" />
+          <entry key="project.open.time.14" value="1" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.8" value="2" />
-          <entry key="project.opened" value="5" />
+          <entry key="project.opened" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -36,13 +45,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="class" value="3" />
-          <entry key="java" value="3310" />
+          <entry key="java" value="6608" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CLASS" value="3" />
-          <entry key="JAVA" value="3310" />
+          <entry key="JAVA" value="6608" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -53,7 +62,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/comp333/Application.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
+            <state relative-caret-position="405">
               <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
             </state>
           </provider>
@@ -68,11 +77,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/comp333/BigIntExtended.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="864">
-              <caret line="139" selection-start-line="139" selection-end-line="139" />
+            <state relative-caret-position="180">
+              <caret line="34" column="23" selection-start-line="34" selection-start-column="23" selection-end-line="34" selection-end-column="23" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -81,19 +90,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="jar:///usr/lib/jvm/java-8-openjdk/jre/lib/rt.jar!/java/math/BigInteger.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="203">
-              <caret line="620" column="20" selection-start-line="620" selection-start-column="20" selection-end-line="620" selection-end-column="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/comp333/BigInt.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="214" column="20" selection-start-line="214" selection-start-column="20" selection-end-line="214" selection-end-column="20" />
+            <state relative-caret-position="1005">
+              <caret line="110" column="19" selection-start-line="110" selection-start-column="19" selection-end-line="110" selection-end-column="19" />
               <folding>
                 <element signature="e#475#476#0" expanded="true" />
                 <element signature="e#518#519#0" expanded="true" />
@@ -103,6 +103,9 @@
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="GradleLocalSettings">
     <option name="modificationStamps">
@@ -119,22 +122,23 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/src/comp333/BigInt.java" />
         <option value="$PROJECT_DIR$/src/comp333/BigIntExtended.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-428" />
-    <option name="y" value="354" />
-    <option name="width" value="956" />
-    <option name="height" value="1005" />
+    <option name="x" value="-3" />
+    <option name="width" value="1926" />
+    <option name="height" value="1052" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -157,13 +161,13 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="/opt/android-sdk" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538232862686" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540566409528" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../comp332-lintilla-translation" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
@@ -232,9 +236,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-3" y="0" width="1926" height="1052" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12939297" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13258786" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -272,15 +275,27 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/comp333/BigIntExtended.java</url>
-          <line>41</line>
+          <line>45</line>
           <properties />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/comp333/BigIntExtended.java</url>
-          <line>29</line>
+          <line>32</line>
           <properties />
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/comp333/BigIntExtended.java</url>
+          <line>143</line>
+          <properties />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/comp333/BigInt.java</url>
+          <line>168</line>
+          <properties />
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -335,20 +350,17 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/comp333/Application.java">
+    <entry file="jar:///usr/lib/jvm/java-8-openjdk/jre/lib/rt.jar!/java/math/BigInteger.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
+        <state relative-caret-position="9045">
+          <caret line="620" column="20" selection-start-line="620" selection-start-column="20" selection-end-line="620" selection-end-column="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/comp333/BigIntExtended.java">
+    <entry file="file://$PROJECT_DIR$/src/comp333/Application.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="864">
-          <caret line="139" selection-start-line="139" selection-end-line="139" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="405">
+          <caret line="27" column="41" selection-start-line="27" selection-start-column="41" selection-end-line="27" selection-end-column="41" />
         </state>
       </provider>
     </entry>
@@ -359,20 +371,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar:///usr/lib/jvm/java-8-openjdk/jre/lib/rt.jar!/java/math/BigInteger.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="620" column="20" selection-start-line="620" selection-start-column="20" selection-end-line="620" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/comp333/BigInt.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="214" column="20" selection-start-line="214" selection-start-column="20" selection-end-line="214" selection-end-column="20" />
+        <state relative-caret-position="1005">
+          <caret line="110" column="19" selection-start-line="110" selection-start-column="19" selection-end-line="110" selection-end-column="19" />
           <folding>
             <element signature="e#475#476#0" expanded="true" />
             <element signature="e#518#519#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/comp333/BigIntExtended.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="34" column="23" selection-start-line="34" selection-start-column="23" selection-end-line="34" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
