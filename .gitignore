@@ -1,0 +1,7 @@
+workspace.xml
+*.class
+assignment2.aux
+assignment2.log
+assignment2.pdf
+assignment2.synctex.gz
+
