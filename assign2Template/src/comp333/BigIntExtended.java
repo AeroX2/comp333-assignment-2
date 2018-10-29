@@ -110,11 +110,11 @@ public class BigIntExtended {
 	// Modular exponentiation, version 2.
 	// This method returns a^b mod n, in case n is prime.
 	public static BigInt modexpv2(BigInt a, BigInt b, BigInt n) {
-        BigInt result = new BigInt();
-		
-		// Complete this code.
-		
-		return result;
+		//Euler thereom
+		//a^b mod m = a^(b mod phi(m)) mod m
+
+		//phi(p) where p is prime is p-1
+		return modexp(a, b.divide(n.subtract(ONE))[1], n);
 	}
 	
 	// Modular exponentiation, version 3.
