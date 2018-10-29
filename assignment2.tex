@@ -44,14 +44,21 @@
 \hyphenation{water question questions maximum}
 \section*{Question 1}
 \begin{enumerate}
-	\item A
-	\item A
+	\item What this invarient is saying is that for every item in the queue, it is at least 1 distance away from the head of the queue. This holds true for eveyr iteration of the BFS algorithm because of a few reasons, the first is that nodes are added onto the end of the queue, the second is that we never visit the same node twice and the third reason is that bfs always expands equally in every direction. For these three reasons nodes in the queue will always be in ascended distance.
+	\item 
 	\item A
 \end{enumerate}
 
 \section*{Question 2}
 \begin{enumerate}
-	\item A
+	\item For each loop of divideBasic we are subtracting b from a. For a worst case scenario this means we have something like 99999 / 1. Expressing this in the form a and b means we get $10^{L(a)}-1$ and $10^{L(b)-1}$. 
+
+Given we are subtracting each loop iteration this means we have $\frac{10^{L(a)}-1}{10^{L(b)-1}}$ operations. And so the Big-Oh of divideBasic is 
+	\begin{align*}
+		&= \frac{10^{L(a)}-1}{10^{L(b)-1}} \\
+		&= 10^{L(a)-(L(b)-1)} - 1 \\
+		&= O(10^{L(a)-L(b)+1})
+	\end{align*}
 	\item A
 	\item A
 \end{enumerate}

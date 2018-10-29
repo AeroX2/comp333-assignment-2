@@ -66,7 +66,6 @@ public class BigIntExtended {
 	// Returns: the inverse of a modulo n.
 	public static int minv(int a, int n) {
 		int[] egcd = egcd(a, n);
-		assert(egcd[0] == 1);
 		return Math.floorMod(egcd[1],n);
 	}
 	
@@ -78,15 +77,10 @@ public class BigIntExtended {
 	//          c is congruent to b modulo q,
 	//          and 0 <= c < pq.
 	public static int cra(int p, int q, int a, int b) {
-		int prod = p*q;
+		int sum = a*q*minv(q,p) +
+		  	      b*p*minv(p,q);
 
-		int p1 = prod/p;
-		int sum = a*minv(p1, p)*p1;
-
-		int p2 = prod/q;
-		sum += (b*minv(p2, q)*p2);
-
-		return sum % prod;
+		return Math.floorMod(sum, p*q);
 	}
 	
 	// Modular exponentiation.
@@ -110,22 +104,26 @@ public class BigIntExtended {
 	// Modular exponentiation, version 2.
 	// This method returns a^b mod n, in case n is prime.
 	public static BigInt modexpv2(BigInt a, BigInt b, BigInt n) {
-        BigInt result = new BigInt();
-		
-		// Complete this code.
-		
-		return result;
+	    return modexp(a, b.divide(n.subtract(ONE))[1], n);
 	}
 	
 	// Modular exponentiation, version 3.
 	// This method returns a^b mod n, in case n = pq, for different
 	// primes p and q.
-	public static BigInt modexpv3(BigInt a, BigInt b, BigInt n) {
-		BigInt result = new BigInt();
+	public static int modexpv3(int a, int b, int p, int q) {
+		BigInt ab = new BigInt(String.valueOf(a));
+		BigInt bb = new BigInt(String.valueOf(b));
+		BigInt pb = new BigInt(String.valueOf(p));
+		BigInt qb = new BigInt(String.valueOf(q));
 
-		// Complete this code.
+		BigInt cd1b = modexpv2(ab,bb,pb);
+		BigInt cd2b = modexpv2(ab,bb,qb);
 
-		return result;
+		int cd1 = Integer.valueOf(cd1b.toString());
+		int cd2 = Integer.valueOf(cd2b.toString());
+		int pinv = minv(p,q);
+
+		return Math.floorMod(cd1 + p * pinv * (cd2 - cd1), p*q);
 	}
 
 	public static BigInt bigpow(BigInt a, BigInt b) {
@@ -282,17 +280,17 @@ public class BigIntExtended {
 		while (true) {
 			try {
 				//TODO: BigInt doesn't support negative numbers, so egcd doesn't support BigInt
-				System.out.print("Length of keys [1 to 4]: ");
+				System.out.print("Length of keys [1 to 3]: ");
 				String s = scanner.nextLine();
 				int length = Integer.valueOf(s);
-				if (length <= 0 || length > 4) {
+				if (length <= 0 || length > 3) {
 					throw new Exception();
 				}
 
 				BigInt p = randomprime(length, 32);
 				BigInt q = randomprime(length, 32);
-				BigInt n = p.multiply(q);
-				BigInt totient = p.subtract(ONE).multiply(q.subtract(ONE));
+				BigInt n = p.multiply(q); //TODO: Replace with karatsuba
+				BigInt totient = p.subtract(ONE).multiply(q.subtract(ONE)); //TOOD: Replace with karatsuba
 
 				BigInt publicKey;
 				while (true) {
@@ -316,8 +314,14 @@ public class BigIntExtended {
 				System.out.print("Data to encrypt: ");
 				s = scanner.nextLine();
 				for (char c : s.toCharArray()) {
-					BigInt qq = new BigInt(String.valueOf((int)c));
-					BigInt zz = modexp(qq, publicKey, n);
+//					BigInt qq = new BigInt(String.valueOf((int)c));
+//					BigInt zz = modexp(qq, publicKey, n);
+
+					int pki = Integer.valueOf(publicKey.toString());
+					int pi = Integer.valueOf(p.toString());
+					int qi = Integer.valueOf(q.toString());
+
+					int zz = modexpv3((int)c, pki, pi, qi);
 					System.out.print(zz+" ");
 				}
 				System.out.println('\n');
