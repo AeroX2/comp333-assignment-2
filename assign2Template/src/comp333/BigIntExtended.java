@@ -60,7 +60,7 @@ public class BigIntExtended {
 		result[2] = y0;
 		return result;
 	}
-	
+
 	// Modular inversion.
 	// Pre: a and n are positive big integers which are coprime.
 	// Returns: the inverse of a modulo n.
@@ -68,7 +68,7 @@ public class BigIntExtended {
 		int[] egcd = egcd(a, n);
 		return Math.floorMod(egcd[1],n);
 	}
-	
+
 	// Chinese remainder algorithm.
 	// Pre: p and q are different big prime numbers.
 	//      0 <= a < p and 0 <= b < q.
@@ -82,7 +82,7 @@ public class BigIntExtended {
 
 		return Math.floorMod(sum, p*q);
 	}
-	
+
 	// Modular exponentiation.
 	// Pre: a and b are nonnegative big integers.
 	//      n is a positive big integer.
@@ -100,7 +100,7 @@ public class BigIntExtended {
 		}
 		return r;
 	}
-	
+
 	// Modular exponentiation, version 2.
 	// This method returns a^b mod n, in case n is prime.
 	public static BigInt modexpv2(BigInt a, BigInt b, BigInt n) {
@@ -110,11 +110,11 @@ public class BigIntExtended {
 		//phi(p) where p is prime is p-1
 		return modexp(a, b.divide(n.subtract(ONE))[1], n);
 	}
-	
+
 	// Modular exponentiation, version 3.
 	// This method returns a^b mod n, in case n = pq, for different
 	// primes p and q.
-	public static int modexpv3(int a, int b, int p, int q) {
+	public static int modexpv3(int p, int q, int a, int b) {
 		BigInt ab = new BigInt(String.valueOf(a));
 		BigInt bb = new BigInt(String.valueOf(b));
 		BigInt pb = new BigInt(String.valueOf(p));
@@ -325,7 +325,7 @@ public class BigIntExtended {
 					int pi = Integer.valueOf(p.toString());
 					int qi = Integer.valueOf(q.toString());
 
-					int zz = modexpv3((int)c, pki, pi, qi);
+					int zz = modexpv3(pi, qi, (int)c, pki);
 					System.out.print(zz+" ");
 				}
 				System.out.println('\n');
