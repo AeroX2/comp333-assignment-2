@@ -144,10 +144,24 @@ public class BigIntExtended {
 		return r;
 	}
 
+	public static String[] strCopy(long index, String string) {
+		String	first = "",
+				last = "";
+		long actualIndex = string.length() - index;
+		for (int i = 0; i<actualIndex; i++) {
+			first+=string.charAt(i);
+		}
+		for (int i = (int)actualIndex; i<string.length(); i++) {
+			last+=string.charAt(i);
+		}
+		return new String[] {first, last};
+	}
+
+
 	// Pre: a and b are nonnegative big integers of equal length.
 	// Returns: the product of a and b using karatsuba's algorithm.
 	public static BigInt karatsuba(BigInt a, BigInt b) {
-		if (a.lessOrEqual(TEN) || b.lessOrEqual(TEN)) return a.multiply(b);
+		if (a.lessOrEqual(new BigInt("2000")) || b.lessOrEqual(new BigInt("2000"))) return a.multiply(b);
 
 		String num1 = a.toString();
 		String num2 = b.toString();
@@ -155,16 +169,19 @@ public class BigIntExtended {
 		int m = Math.max(num1.length(), num2.length());
 		int m2 = m/2;
 
-		BigInt low1  = new BigInt(num1.substring(0,m2));
-		BigInt high1 = new BigInt(num1.substring(m2));
-		BigInt low2  = new BigInt(num2.substring(0,m2));
-		BigInt high2 = new BigInt(num2.substring(m2));
+//		num1 = String.format("%1$"+m+"s", num1);
+//		num2 = String.format("%1$"+m+"s", num2);
+
+		BigInt high1  = new BigInt(num1.substring(0,num1.length()-m2));
+		BigInt low1 = new BigInt(num1.substring(num1.length()-m2));
+		BigInt high2  = new BigInt(num2.substring(0,num2.length()-m2));
+		BigInt low2 = new BigInt(num2.substring(num2.length()-m2));
 
 		BigInt z0 = karatsuba(low1, low2);
 		BigInt z1 = karatsuba(low1.add(high1), low2.add(high2));
 		BigInt z2 = karatsuba(high1, high2);
 
-		BigInt s = z2.multiply(bigpow(TEN, new BigInt(String.valueOf(m))));
+		BigInt s = z2.multiply(bigpow(TEN, new BigInt(String.valueOf(m2*2))));
 		BigInt t = z1.subtract(z2).subtract(z0).multiply(bigpow(TEN, new BigInt(String.valueOf(m2))));
 
 		return s.add(t).add(z0);
