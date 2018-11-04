@@ -165,9 +165,6 @@ public class BigInt {
 	// Time complexity: O(L(a)).
 	// Reason: method makes one pass through the digit lists.
 	public BigInt subtract(BigInt otherBigInt) {
-//		if (this.lessOrEqual(otherBigInt) && !this.isEqual(otherBigInt)) {
-//			throw new Error("Error other BigInt is larger, this implementation doesn't support negative numbers");
-//		}
 
 		int a, b, c, diff;
 		int carry = 0;

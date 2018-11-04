@@ -114,7 +114,7 @@ public class BigIntExtended {
 	// Modular exponentiation, version 3.
 	// This method returns a^b mod n, in case n = pq, for different
 	// primes p and q.
-	public static int modexpv3(int p, int q, int a, int b) {
+	public static int modexpv3(int a, int b, int p, int q) {
 		BigInt ab = new BigInt(String.valueOf(a));
 		BigInt bb = new BigInt(String.valueOf(b));
 		BigInt pb = new BigInt(String.valueOf(p));
@@ -196,37 +196,49 @@ public class BigIntExtended {
 		return (int)(Math.random()*(high-low+1)) + low;
 	}
 
-	//TODO: This function isn't random it is biased, low=1, high=10, biased towards 10
+//	public static BigInt randombigint(BigInt low, BigInt high) {
+//		if (high.lessOrEqual(low)) return null;
+//
+//		StringBuilder randomNumber = new StringBuilder();
+//		String lowS = low.toString();
+//		String highS = high.toString();
+//
+//		//Pick the amount of digits that the final result is going to be
+//		int randomLength = randomrange(lowS.length(), highS.length());
+//		//System.out.println("Random length: "+randomLength);
+//
+//		boolean restrictLow = randomLength == lowS.length();
+//		boolean restrictHigh = randomLength == highS.length();
+//		for (int i = 0; i < randomLength; i++) {
+//			int lowDigit = (i==0) ? 1 : 0;
+//			int highDigit = 9;
+//
+//			if (restrictLow) lowDigit = lowS.charAt(i)-'0';
+//			if (restrictHigh) highDigit = highS.charAt(i)-'0';
+//
+//			int digit = randomrange(lowDigit, highDigit);
+//			if (restrictLow && digit != lowDigit) restrictLow = false;
+//			if (restrictHigh && digit != highDigit) restrictHigh = false;
+//
+//			//System.out.println("Appending digit: "+digit);
+//			randomNumber.append(digit);
+//		}
+//
+//		return new BigInt(randomNumber.toString());
+//	}
+
+	static BigInt a = new BigInt("1140671485");
+	static BigInt c = new BigInt("128201163");
+	static BigInt m = bigpow(TWO, new BigInt("24"));
+	static BigInt rand = new BigInt(String.valueOf((int)(Math.random()*(Integer.MAX_VALUE-1))));
+
 	public static BigInt randombigint(BigInt low, BigInt high) {
-		if (high.lessOrEqual(low)) return null;
+		rand = a.multiply(rand).add(c).divide(m)[1];
 
-		StringBuilder randomNumber = new StringBuilder();
-		String lowS = low.toString();
-		String highS = high.toString();
+		//BigInt r = rand.multiply(high.subtract(low).add(ONE)).divide(m)[0];
+		BigInt r = karatsuba(rand, high.subtract(low).add(ONE)).divide(m)[0];
 
-		//Pick the amount of digits that the final result is going to be
-		int randomLength = randomrange(lowS.length(), highS.length());
-		//System.out.println("Random length: "+randomLength);
-
-		boolean restrictLow = randomLength == lowS.length();
-		boolean restrictHigh = randomLength == highS.length();
-		for (int i = 0; i < randomLength; i++) {
-			int lowDigit = (i==0) ? 1 : 0;
-			int highDigit = 9;
-
-			if (restrictLow) lowDigit = lowS.charAt(i)-'0';
-			if (restrictHigh) highDigit = highS.charAt(i)-'0';
-
-			int digit = randomrange(lowDigit, highDigit);
-			if (restrictLow && digit != lowDigit) restrictLow = false;
-			if (restrictHigh && digit != highDigit) restrictHigh = false;
-
-			//System.out.println("Appending digit: "+digit);
-			randomNumber.append(digit);
-		}
-
-		//Add the randomrange BigInt to the low BigInt
-		return new BigInt(randomNumber.toString());
+		return low.add(r);
 	}
 
 	// Pre: n is an odd big integer greater than 4.
@@ -342,7 +354,7 @@ public class BigIntExtended {
 					int pi = Integer.valueOf(p.toString());
 					int qi = Integer.valueOf(q.toString());
 
-					int zz = modexpv3(pi, qi, (int)c, pki);
+					int zz = modexpv3((int)c, pki, pi, qi);
 					System.out.print(zz+" ");
 				}
 				System.out.println('\n');
