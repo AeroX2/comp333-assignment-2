@@ -4,7 +4,7 @@
 \usepackage[T1]{fontenc}
 
 %\usepackage{color}
-%\usepackage{parskip}
+\usepackage{parskip}
 \usepackage{enumerate}
 \usepackage{xcolor}
 \usepackage{amsmath}
@@ -73,7 +73,24 @@ Given we are subtracting each loop iteration this means we have $\frac{10^{L(a)}
 		&= 10^{L(a)-(L(b)-1)} - 1 \\
 		&= O(10^{L(a)-L(b)+1})
 	\end{align*}
-	\item A
+	\item To figure out the time complexity for divide we first need to figure out how big divisorShifted gets, the first while loop basically keeps multiplying $b$ by 10 until it is larger than $a$, this can be expressed as so.
+	\begin{align*}
+		b\cdot 10^x &> a \\
+		10^x &> \frac{a}{b} \\
+		x &> log_{10}(\frac{a}{b}) \\
+	\end{align*}
+	The first thing to note is that the $log_{10}(a) \approx L(a)$. So this means
+	\begin{align*}
+		&= log_{10}(\frac{a}{b}) \\
+		&= log_{10}(a)-log_{10}(b) \\
+		&= L(a) - L(b) \\
+	\end{align*}
+	Then the next thing to note is the main while loop runs through the size of the divisorShifted plus 1 because $x$ only corresponds to how many zero's we added to divisorShifted and the loop is removing a zero each time. This means the main while loop is doing $L(a)-L(b)+1$ iterations.
+	
+	Lastly every loop iteration we are doing a subtraction on remainder, this subtraction is inside a while loop but this while loop only executes 10 times at most because it is basically doing digit subtraction and the largest and smallest digit we can have is 9 and 1. The time complexity for a subtraction is $L(a)$, multiplying this by the amount of times the outer main while loop executes we get $L(a)(L(a)-L(b)+1)$
+\\\\\
+	(We can effectively ignore the addition on the quotient because it is not operating on $a$ or $b$. This is the same as if I was getting the time complexity for summing an array, we can ignore the constant operations that are happening inside the loop because they aren't operating on the array.)
+	
 	\item The best way to understand this question is with some graphs
 	\\\\
 	\includegraphics[scale=2]{divide-complexity-1} \\
@@ -90,7 +107,7 @@ Given we are subtracting each loop iteration this means we have $\frac{10^{L(a)}
 
 \section*{Question 3}
 \begin{enumerate}[(a)]
-	\item \begin{lstlisting}
+	\item TODO \begin{lstlisting}
 	public static int[] egcd(int a, int b) {
 		int x0 = 1;
 		int x1 = 0;
@@ -121,14 +138,14 @@ Given we are subtracting each loop iteration this means we have $\frac{10^{L(a)}
 	}
 	\end{lstlisting}
 
-	\item \begin{lstlisting}
+	\item TODO \begin{lstlisting}
 	public static int minv(int a, int n) {
 		int[] egcd = egcd(a, n);
 		return Math.floorMod(egcd[1],n);
 	}
 	\end{lstlisting}
 	
-	\item \begin{lstlisting}
+	\item TODO \begin{lstlisting}
 	public static int cra(int p, int q, int a, int b) {
 		int sum = a*q*minv(q,p) +
 		  	      b*p*minv(p,q);
@@ -142,7 +159,7 @@ Given we are subtracting each loop iteration this means we have $\frac{10^{L(a)}
 \begin{enumerate}[(a)]
 	\item Loop invariant: $a^{b_0} \equiv ra^b\ (mod\ n)$, where $b_0$ is the original $b$ value.
 	
-		  For this algorithm it runs until b is zero and for every iteration of the loop we divide b by 2. So this loop runs at least $log_2(b)$ times. During the loop operation we do 2 multiplications and 2 divisions, while 1 of the multiplications and 1 of the divisions is behind an if statement in the worse case scenario (Big-Oh), if a number was simply a 1 bit repeated it would always trigger the if statement.
+		  TOFIX: For this algorithm it runs until b is zero and for every iteration of the loop we divide b by 2. So this loop runs at least $log_2(b)$ times. During the loop operation we do 2 multiplications and 2 divisions, while 1 of the multiplications and 1 of the divisions is behind an if statement in the worse case scenario (Big-Oh), if a number was simply a 1 bit repeated it would always trigger the if statement.
 		  
 		  So for the worse case scenario we have
 		  \begin{align*}
@@ -161,6 +178,7 @@ Given we are subtracting each loop iteration this means we have $\frac{10^{L(a)}
 	\end{lstlisting}
 	
 	\item \begin{lstlisting}
+	TODO:
 	public static int modexpv3(int a, int b, int p, int q) {
 		BigInt ab = new BigInt(String.valueOf(a));
 		BigInt bb = new BigInt(String.valueOf(b));
@@ -180,7 +198,7 @@ Given we are subtracting each loop iteration this means we have $\frac{10^{L(a)}
 \end{enumerate}
 
 \section*{Question 5}
-- For the time complexity of Karatsuba we first need to find out how deep the tree of the recursion will go. Using what we understand of the algorithm and how it effectively splits the numbers in half each time. The depth of the tree is $log_2(max(L(a),L(b)))$.
+TOFIX: For the time complexity of Karatsuba we first need to find out how deep the tree of the recursion will go. Using what we understand of the algorithm and how it effectively splits the numbers in half each time. The depth of the tree is $log_2(max(L(a),L(b)))$.
 
 Then for every node of the recursion we do the following
 \begin{enumerate}[(a)]
@@ -198,7 +216,7 @@ This effectively means we have the time complexity of
 	&= log_2(max(L(a),L(b)))\cdot \left( 3(2add+2mul+2sub+2less+2modpow) \right) \\
 \end{align*}
 
-- In what circumstance would you expect Karatsuba’s algorithm to be more efficient than the classical one?
+TODO: In what circumstance would you expect Karatsuba’s algorithm to be more efficient than the classical one?
 
 \section*{Question 6}
 \begin{lstlisting}[language=Java]
@@ -351,6 +369,6 @@ For encryption, we need to generate a private key, a public key and a modulus. T
 	\item For every chuck in the data to be encrypted, take the modular exponent of the chunk, the public key and the modulus ($n = p\cdot q$)
 \end{enumerate}
 
-Decryption is a simpler process, for every chuck in the data to be decrypted, take the modular exponent of the chunk, the private key and the modulus and concatenate that all together.
+Decryption is a simpler process, for every chuck in the data to be decrypted, take the modular exponent of the chunk, the private key and the modulus and then concatenate all the results together making sure to convert the int's back to char's.
 
 \end{document}

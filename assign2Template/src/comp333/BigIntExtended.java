@@ -125,9 +125,8 @@ public class BigIntExtended {
 
 		int cd1 = Integer.valueOf(cd1b.toString());
 		int cd2 = Integer.valueOf(cd2b.toString());
-		int pinv = minv(p,q);
 
-		return Math.floorMod(cd1 + p * pinv * (cd2 - cd1), p*q);
+		return cra(p,q,cd1,cd2);
 	}
 
 	public static BigInt bigpow(BigInt a, BigInt b) {
@@ -143,20 +142,6 @@ public class BigIntExtended {
 		}
 		return r;
 	}
-
-	public static String[] strCopy(long index, String string) {
-		String	first = "",
-				last = "";
-		long actualIndex = string.length() - index;
-		for (int i = 0; i<actualIndex; i++) {
-			first+=string.charAt(i);
-		}
-		for (int i = (int)actualIndex; i<string.length(); i++) {
-			last+=string.charAt(i);
-		}
-		return new String[] {first, last};
-	}
-
 
 	// Pre: a and b are nonnegative big integers of equal length.
 	// Returns: the product of a and b using karatsuba's algorithm.
@@ -185,15 +170,6 @@ public class BigIntExtended {
 		BigInt t = z1.subtract(z2).subtract(z0).multiply(bigpow(TEN, new BigInt(String.valueOf(m2))));
 
 		return s.add(t).add(z0);
-	}
-
-	//Return a randomrange int between 0 and high (inclusive)
-	public static int randomrange(int low, int high) {
-		if (low > high) {
-			System.out.println("ERROR: Low > High");
-			return -1;
-		}
-		return (int)(Math.random()*(high-low+1)) + low;
 	}
 
 //	public static BigInt randombigint(BigInt low, BigInt high) {
