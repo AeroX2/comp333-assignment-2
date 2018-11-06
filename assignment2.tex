@@ -216,7 +216,7 @@ This effectively means we have the time complexity of
 	&= log_2(max(L(a),L(b)))\cdot \left( 3(2add+2mul+2sub+2less+2modpow) \right) \\
 \end{align*}
 
-TODO: In what circumstance would you expect Karatsuba’s algorithm to be more efficient than the classical one?
+Generally karatsuba is less efficient for numbers of small length due to the amount of extra steps that needs to be taken specifically the splitting of strings which can be done through string manipulation or through division and modulo operations. However once we start getting to digits that are hundreds of digits long then Karatsuba can be significantly faster than the classical method.
 
 \section*{Question 6}
 \begin{lstlisting}[language=Java]
