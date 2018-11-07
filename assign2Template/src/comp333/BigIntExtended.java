@@ -33,6 +33,32 @@ public class BigIntExtended {
 	// Returns: triple (d, x, y) such that
 	//          d = gcd(a,b) = ax + by.
 	public static int[] egcd(int a, int b) {
+		//BigInt x0 = ONE;
+		//BigInt x1 = ZERO;
+		//BigInt y0 = ZERO;
+		//BigInt y1 = ONE;
+		//
+		//while (!b.isEqual(ZERO)) {
+		//	BigInt t = new BigInt(b.toString());
+		//	BigInt[] q = a.divide(b);
+		//	a = t;
+		//	b = q[1];
+		//
+		//	t = new BigInt(x1.toString());
+		//	x1 = x0.subtract(x1.multiply(q[0]));
+		//	x0 = t;
+		//
+		//	t = new BigInt(y1.toString());
+		//	y1 = y0.subtract(y1.multiply(q[0]));
+		//	y0 = t;
+		//}
+		//
+		//BigInt[] result = new BigInt[3];
+		//result[0] = a;
+		//result[1] = x0;
+		//result[2] = y0;
+		//return result;
+
 		int x0 = 1;
 		int x1 = 0;
 		int y0 = 0;
@@ -65,6 +91,9 @@ public class BigIntExtended {
 	// Pre: a and n are positive big integers which are coprime.
 	// Returns: the inverse of a modulo n.
 	public static int minv(int a, int n) {
+		//BigInt[] egcd = egcd(a, n);
+		//return egcd[0].divide(n)[1];
+
 		int[] egcd = egcd(a, n);
 		return Math.floorMod(egcd[1],n);
 	}
@@ -77,6 +106,12 @@ public class BigIntExtended {
 	//          c is congruent to b modulo q,
 	//          and 0 <= c < pq.
 	public static int cra(int p, int q, int a, int b) {
+		//BigInt sum = a.multiply(minv(q, p)).multiply(q);
+		//sum = sum.add(b.multiply(minv(p, q)).multiply(p));
+		//
+		//BigInt prod = p.multiply(q);
+		//return sum.divide(prod)[1];
+
 		int sum = a*q*minv(q,p) +
 		  	      b*p*minv(p,q);
 
